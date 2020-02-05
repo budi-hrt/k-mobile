@@ -1,23 +1,26 @@
 <!-- Begin Page Content -->
-<div class="container-fluid">
+<div class="container-fluid p-1">
 
     <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">Data Sales</h1>
+    <h1 class="h6 mb-2 text-gray-800">Data Produk</h1>
 
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">List Sales</h6>
+            <p class="m-0 font-weight-bold text-primary">List Produk</p>
+            <div class="d-flex justify-content-end mt-n4">
+                <a class="btn btn-sm btn-success mb-n2 shadow" href="">Tambah</a>
+            </div>
         </div>
-        <div class="card-body">
+        <div class="card-body p-1">
             <div class="table-responsive">
-                <table class="table table-sm table-bordered" id="dataTable" width="100%" cellspacing="0">
-                    <thead class="bg-primary text-white">
+                <table class="table table-sm table-app" width=" 100%" cellspacing="0">
+                    <thead class="thead-light">
                         <tr>
-                            <th>#</th>
+                            <th></th>
                             <th>Kode</th>
                             <th>Nama</th>
-                            <th>Aksi</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -25,10 +28,14 @@
                         $no = 1;
                         foreach ($produk as $p) : ?>
                             <tr>
-                                <td class="text-center"><?= $no++; ?></td>
-                                <td><?= $p['kode']; ?></td>
-                                <td><?= $p['alias']; ?></td>
-                                <td><a href="javascript:;"><i class="fas fa-eye"></i></a></td>
+                                <td width="50px"><img src="<?= base_url('assets/img/icon/box.png'); ?>" alt=""></td>
+                                <td width="70px"><?= $p['kode']; ?></td>
+                                <td><?= $p['nama_produk']; ?></td>
+                                <td class="text-right">
+                                    <a href="javascript:;" class="mr-2"><i class="fas fa-eye"></i></a>
+                                    <a href="javascript:;" class="mr-2"><i class="fas fa-pencil-alt text-success"></i></a>
+                                    <a href="javascript:;" class="mr-2"><i class="fas fa-times text-danger"></i></a>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>

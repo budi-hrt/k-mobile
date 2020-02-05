@@ -9,4 +9,11 @@ class Stok_model extends CI_model
         $query =  $this->db->get('produk');
         return $query;
     }
+
+    public function get_sales()
+    {
+        $this->db->where('is_active', 1);
+        $query =  $this->db->get('sales');
+        return $query;
+    }
 }

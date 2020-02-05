@@ -1,3 +1,24 @@
+@font-face {
+	font-family: 'Poppins';
+	src: url('../vendor/font/poppins/Poppins-Regular.ttf');
+}
+
+body {
+	font-family: Poppins, Arial, Helvetica, sans-serif;
+}
+
+
+
+/* Table */
+table thead th {
+	font-weight: 500;
+}
+
+.table-app {
+	font-size: 13px;
+}
+
+
 .btn-produk {
 	width: 120px;
 	height: 80px;
