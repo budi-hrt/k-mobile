@@ -188,4 +188,32 @@ class Stok extends CI_Controller
         // $this->load->view('template/topbar', $data);
         $this->load->view('penjualan', $data);
     }
+
+    public function tampil_penjualan()
+    {
+        $nomor = $this->input->get('nomor');
+        $this->db->select('t.id as id_detil,t.awal,t.akhir,t.kode_produk,p.nama_produk,p.banding,p.harga,p.alias');
+        $this->db->from('transaksi t');
+        $this->db->join('produk p', 'p.kode=t.kode_produk', 'left');
+        $this->db->where('t.nomor_stok', $nomor);
+        $data = $this->db->get();
+
+        if ($data->num_rows() > 1) {
+            // foreach ($data->result_array() as $r) {
+
+            // }
+            $dt['data'] = $data->result_array();
+            $this->load->view('list-penjualan', $dt);
+        } else {
+            echo '
+                <tr>
+                <input type="hidden" name="item" >
+                <td colspan="7" rowspan="3" class="text-center"> Belum Ada Stok</td>
+                
+                </tr>
+
+
+                ';
+        }
+    }
 }
