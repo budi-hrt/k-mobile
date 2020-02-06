@@ -19,7 +19,13 @@
     <link href="<?= base_url('assets/'); ?>css/sb-admin-2.min.css" rel="stylesheet">
     <!-- Custom styles for this page -->
     <link href="<?= base_url('assets/'); ?>vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="<?= base_url('assets/'); ?>vendor/datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet">
     <link href="<?= base_url('assets/'); ?>css/style.css" rel="stylesheet">
+
+
+    <script>
+        const base_url = '<?= base_url(); ?>';
+    </script>
 
 </head>
 
