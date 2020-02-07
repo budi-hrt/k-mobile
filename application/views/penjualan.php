@@ -14,8 +14,8 @@
     <style>
         body {
             font-family: 'Open Sans Condensed', sans-serif;
-            font-size: 15px;
-            font-weight: 300;
+            font-size: 16px;
+            font-weight: 100;
             margin: 20;
         }
 
@@ -39,6 +39,8 @@
 </head>
 
 <body>
+    <?php
+    date_default_timezone_set('Asia/Jakarta');; ?>
     <div style="margin-left: 100px;margin-top:30px;">
         <h3>Laporan Penjualan Kanvas</h3>
     </div>
@@ -52,7 +54,7 @@
         <tr>
             <td>Tanggal</td>
             <td>:</td>
-            <td><?= date('d F Y', strtotime($nomor['tanggal'])); ?></td>
+            <td><?= date('d F Y H:i:s', $nomor['date_created']); ?></td>
         </tr>
         <tr>
             <td>Nama</td>
@@ -81,22 +83,8 @@
 
         </tbody>
     </table>
-    <table width="350px">
-        <tr>
-            <td align="center" width="175px">Sales</td>
-            <td align="center" width="175px">Admin Stok</td>
-        </tr>
-        <tr>
-            <td align="center" width="175px"><?= $nomor['nama_sales']; ?></td>
-            <td align="center" width="175px"><?= $nomor['nama_user']; ?></td>
-        </tr>
-    </table>
-    <table width="350">
-        <tr>
-            <td align="center" width="175px">..........................</td>
-            <td align="center" width="175px">...........................</td>
-        </tr>
-    </table>
+
+    Admin Stok : <?= $nomor['nama_user']; ?>, <?= date('d F Y H:i:s', $nomor['date_update']); ?> , Status : <?= $nomor['status_penjualan']; ?> <br>
     <small style="margin-left: 10px;">- App by Budi Harto -</small>
 
 

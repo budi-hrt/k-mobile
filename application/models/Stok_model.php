@@ -55,7 +55,7 @@ class Stok_model extends CI_model
 
     public function get_penjualan($nomor)
     {
-        $this->db->select('p.tanggal,p.nomor_transaksi,s.nama_sales,u.nama_user');
+        $this->db->select('p.tanggal,p.nomor_transaksi,s.nama_sales,u.nama_user,p.date_update,p.date_created,p.status_penjualan');
         $this->db->from('penjualan p');
         $this->db->join('sales s', 's.id=p.id_sales', 'left');
         $this->db->join('user u', 'u.id_user=p.id_user', 'left');

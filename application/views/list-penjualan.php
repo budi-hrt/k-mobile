@@ -50,11 +50,28 @@ foreach ($data as $r) : ?>
     }; ?>
 
     <tr>
-        <td><?= $r['alias']; ?></td>
+        <?php if ($r['awal'] == 0 && $r['akhir'] == 0) {
+            echo '
+            <td style="display: none">' . $r['alias'] . '</td>
+            <td style="display: none">' . $dos . '/' . $bks . '</td>
+            <td style="display: none">' . $ados . ' /' . $abks . '</td>
+            <td style="display: none">' . $tdos . ' /' . $tbks . '</td>
+            <td style="display: none">' . number_format($total, 0, ',', '.') . '</td>
+            ';
+        } else {
+            echo '
+            <td>' . $r['alias'] . '</td>
+            <td align="center">' . $dos . '/' . $bks . '</td>
+            <td align="center">' . $ados . ' /' . $abks . '</td>
+            <td align="center">' . $tdos . ' /' . $tbks . '</td>
+            <td align="right">' . number_format($total, 0, ',', '.') . '</td>
+            ';
+        }; ?>
+        <!-- <td><?= $r['alias']; ?></td>
         <td align="center"><?= $dos; ?> /<?= $bks; ?></td>
         <td align="center"><?= $ados; ?> /<?= $abks; ?></td>
         <td align="center"><?= $tdos; ?> /<?= $tbks; ?></td>
-        <td align="right"><?= number_format($total, 0, ',', '.'); ?></td>
+        <td align="right"><?= number_format($total, 0, ',', '.'); ?></td> -->
     </tr>
 
     <?php
