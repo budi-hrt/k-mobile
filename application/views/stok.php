@@ -119,6 +119,36 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-konfirm" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content ">
+            <div class="modal-header">
+                <h5 class="modal-title ml-5">Konfirmasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body pl-5 pr-5 pb-5 pt-2">
+                <h5>Belum Ada Stok Awal !</h5>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- modal-loading -->
+<div class="modal bd-example-modal-sm " id="modal-loading" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-dialog-centered modal-loading-2" role="document">
+        <div class="modal-content text-center shadow">
+            <!-- <div class="modal-body text-center"> -->
+            <label id="label-info">Please wait...</label>
+            <!-- </div> -->
+
+        </div>
+    </div>
+</div>
+
+
+
 
 <!-- Footer -->
 <footer class="sticky-footer bg-white">
@@ -158,20 +188,25 @@
             success: function(response) {
                 if (response.success) {
                     if (response.type == 'ada') {
-                        $('#modal-sales').modal('hide');
                         $('input[name="nomor"]').val(response.nomor);
                         $('input[name="id_sales"]').val(id_sls);
                         $('input[name="nama_sales"]').val(nm_sales);
                         $('.nomor_stok').text('Nomor Stok : ' + response.nomor);
                         $('.nama_sales').text('Nama : ' + nm_sales);
+                        $('#modal-loading').modal('show');
                         setTimeout(function() {
-                            // alert('ada');
+                            $('#modal-sales').modal('hide');
+                            $('#modal-loading').modal('hide');
                             simpan_session_sales();
                             tampil_stok();
-                        }, 300);
+                        }, 1000);
                     } else if (response.type == 'kosong') {
-                        $('#modal-sales').modal('hide');
-                        alert('Stok Awal Belum Ada !');
+                        $('#modal-loading').modal('show');
+                        setTimeout(function() {
+                            $('#modal-sales').modal('hide');
+                            $('#modal-loading').modal('hide');
+                            $('#modal-konfirm').modal('show');
+                        }, 500);
                         // simpan_detil();
                         // simpan_session_sales();
                         // setTimeout(function() {
