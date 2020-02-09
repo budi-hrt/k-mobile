@@ -183,9 +183,6 @@ class Stok extends CI_Controller
 
         $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
         $data['nomor'] = $this->stok->get_penjualan($nomor)->row_array();
-        // $this->load->view('template/header', $data);
-        // $this->load->view('template/sidebar');
-        // $this->load->view('template/topbar', $data);
         $this->load->view('penjualan', $data);
     }
 
@@ -215,5 +212,86 @@ class Stok extends CI_Controller
 
                 ';
         }
+    }
+
+
+    public function list()
+    {
+
+        $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
+        $data['stok'] = $this->stok->get_allStok()->result_array();
+        $this->load->view('template/header', $data);
+        $this->load->view('template/sidebar');
+        $this->load->view('template/topbar', $data);
+        $this->load->view('list-stok', $data);
+    }
+
+    public function cek_edit()
+    {
+        $msg['success'] = false;
+        $tgl = $this->input->get('tgl');
+        $data = $this->db->get('tutup_buku')->row_array();
+        $tutup = $data['tanggal_tutup'];
+        if ($tgl <= $tutup) {
+            $msg['success'] = true;
+            $msg['type'] = 'tutup';
+            echo json_encode($msg);
+        } else {
+            $msg['success'] = true;
+            $msg['type'] = 'buka';
+            echo json_encode($msg);
+        }
+    }
+
+
+
+
+    public function edit($nomor)
+    {
+        $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
+        $data['nomor'] = $this->stok->get_penjualan($nomor)->row_array();
+        $this->load->view('template/header', $data);
+        $this->load->view('template/sidebar');
+        $this->load->view('template/topbar', $data);
+        $this->load->view('edit-stok', $data);
+    }
+
+
+    public function ubah_tb()
+    {
+        $this->stok->ubah_tb();
+    }
+
+    public function ubah_detil()
+    {
+        $id = $_POST['id_trs'];
+
+        $status = 'Koreksi';
+        $data = array();
+        $index = 0; // Set index array awal dengan 0
+        foreach ($id as $k) { // Kita buat perulangan berdasarkan nis sampai data terakhir
+            array_push($data, array(
+                'id' => $k,
+                'status' => $status  // Ambil dan set data telepon sesuai index array dari $index
+            ));
+
+            $index++;
+        }
+        $this->db->update_batch('transaksi', $data, 'id');
+    }
+
+    public function session_status()
+    {
+        $sts = 'sts';
+        $this->session->unset_userdata($sts);
+        $data = $this->input->post('status');
+        $status = ['sts' => $data];
+        $this->session->set_userdata($status);
+    }
+
+    public function hapus_session_status()
+    {
+        $array = 'sts';
+        $this->session->unset_userdata($array);
     }
 }

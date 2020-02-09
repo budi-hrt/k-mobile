@@ -44,6 +44,7 @@ class Stok_model extends CI_model
         $data = array(
             'tanggal' => $tanggal,
             'jumlah' => $jumlah,
+            'date_created' => time(),
             'date_update' => time(),
             'id_user' => $id_user,
             'status_penjualan' => 'Stok'
@@ -55,12 +56,42 @@ class Stok_model extends CI_model
 
     public function get_penjualan($nomor)
     {
-        $this->db->select('p.tanggal,p.nomor_transaksi,s.nama_sales,u.nama_user,p.date_update,p.date_created,p.status_penjualan');
+        $this->db->select('p.id as id_pj,p.tanggal,p.nomor_transaksi,s.nama_sales,u.nama_user,p.date_update,p.date_created,p.status_penjualan');
         $this->db->from('penjualan p');
         $this->db->join('sales s', 's.id=p.id_sales', 'left');
         $this->db->join('user u', 'u.id_user=p.id_user', 'left');
         $this->db->where('p.nomor_transaksi', $nomor);
         $query = $this->db->get();
         return $query;
+    }
+
+
+    public function get_allStok()
+    {
+        $this->db->select('p.id as id_pj,p.tanggal,p.nomor_transaksi,s.nama_sales');
+        $this->db->from('penjualan p');
+        $this->db->join('sales s', 's.id=p.id_sales', 'left');
+        $this->db->where('status_penjualan<>', 'Pending');
+        $this->db->order_by('p.id', 'desc');
+        $query = $this->db->get();
+        return $query;
+    }
+
+
+    public function ubah_tb()
+    {
+
+        $jumlah = $this->input->post('subttl');
+        $id = $this->input->post('id');
+        $nomor = $this->input->post('nomor');
+        $id_user = $this->input->post('id_user');
+        $data = array(
+            'jumlah' => $jumlah,
+            'date_update' => time(),
+            'id_user' => $id_user,
+            'status_penjualan' => 'Koreksi'
+        );
+        $this->db->where('id', $id);
+        $this->db->update('penjualan', $data);
     }
 }

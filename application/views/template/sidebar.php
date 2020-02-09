@@ -48,6 +48,11 @@
             <i class="fas fa-fw fa-edit"></i>
             <span>Stok</span></a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link" href="<?= base_url('stok/list'); ?>">
+            <i class="fas fa-fw fa-edit"></i>
+            <span>List Stok</span></a>
+    </li>
 
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">

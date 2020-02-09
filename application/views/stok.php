@@ -56,7 +56,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body p-1">
+            <div class="modal-body p-1" id="panel-item">
                 <div class="table-responsive">
                     <table class="table table-sm  table-app" width="100%" cellspacing="0" id="table-sales">
 
@@ -95,10 +95,9 @@
             <div class="modal-body pl-5 pr-5 pb-5 pt-2">
                 <div class="row justify-content-center">
                     <div class="col-md-8 ">
-
                         <input type="hidden" name="id_detil">
                         <input type="hidden" name="banding">
-                        <div class="form-group row">
+                        <div class="form-group row my-1">
                             <label for="inputPassword" class="col-sm-3 col-form-label">Dos</label>
                             <div class="col-sm-9">
                                 <input type="number" class="form-control " id="dos" name="dos">
@@ -135,33 +134,33 @@
         </div>
     </div>
 </div>
-<!-- modal-loading -->
-<div class="modal bd-example-modal-sm " id="modal-loading" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog  modal-dialog-centered modal-loading-2" role="document">
-        <div class="modal-content text-center shadow">
-            <!-- <div class="modal-body text-center"> -->
-            <label id="label-info">Please wait...</label>
-            <!-- </div> -->
 
+
+
+
+<!-- loader -->
+<div id="throbber" class="modal" role="dialog" style="display:none; position:relative;  background-color:white;">
+    <img style="width:100px" class="spiner" src="<?= base_url('assets'); ?>/img/gif/kotak1.gif" />
+</div>
+
+
+
+<!-- Modal Simpan -->
+<div class="modal fade" id="modal-simpan" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog " role="document">
+        <div class="modal-content ">
+            <div class="modal-body text-center">
+                <i class="fas fa-exclamation-triangle text-warning fa-2x"></i> Yakin Akan Menyimpan Data ?
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger btn-sm" type="button" data-dismiss="modal">Batal</button>
+                <a class="btn btn-success btn-sm" href="javascript:;" id="save">Simpan</a>
+            </div>
         </div>
     </div>
 </div>
 
 
-
-
-<!-- Footer -->
-<footer class="sticky-footer bg-white">
-    <div class="container my-auto">
-        <div class="copyright text-center my-auto">
-            <span>Copyright &copy; Budi Harto 2020</span>
-        </div>
-    </div>
-</footer>
-<!-- End of Footer -->
-
-</div>
-<!-- End of Content Wrapper -->
 <?php $this->load->view('template/footer'); ?>
 <script>
     $(document).ready(function() {
@@ -193,27 +192,21 @@
                         $('input[name="nama_sales"]').val(nm_sales);
                         $('.nomor_stok').text('Nomor Stok : ' + response.nomor);
                         $('.nama_sales').text('Nama : ' + nm_sales);
-                        $('#modal-loading').modal('show');
+                        block();
                         setTimeout(function() {
+                            unblock();
                             $('#modal-sales').modal('hide');
-                            $('#modal-loading').modal('hide');
                             simpan_session_sales();
                             tampil_stok();
                         }, 1000);
                     } else if (response.type == 'kosong') {
-                        $('#modal-loading').modal('show');
+                        block();
                         setTimeout(function() {
+                            unblock();
                             $('#modal-sales').modal('hide');
-                            $('#modal-loading').modal('hide');
                             $('#modal-konfirm').modal('show');
-                        }, 500);
-                        // simpan_detil();
-                        // simpan_session_sales();
-                        // setTimeout(function() {
-                        //     tampil_stok();
-                        //     $('#simpan').show();
-                        //     $('#buat').hide();
-                        // }, 500)
+                        }, 1000);
+
                     }
                 }
             }
@@ -232,27 +225,27 @@
             success: function(response) {
                 if (response.success) {
                     if (response.type == 'ada') {
-                        $('#modal-sales').modal('hide');
+
                         $('input[name="nomor"]').val(response.nomor);
                         $('input[name="id_sales"]').val(id_sls);
                         $('input[name="nama_sales"]').val(nm_sales);
                         $('.nomor_stok').text('Nomor Stok : ' + response.nomor);
                         $('.nama_sales').text('Nama : ' + nm_sales);
+                        block();
                         setTimeout(function() {
-                            // alert('ada');
+                            unblock();
+                            $('#modal-sales').modal('hide');
                             simpan_session_sales();
                             tampil_stok();
-                        }, 300);
+                        }, 1000);
                     } else if (response.type == 'kosong') {
-                        $('#modal-sales').modal('hide');
-                        alert('Stok Awal Belum Ada !');
-                        // simpan_detil();
-                        // simpan_session_sales();
-                        // setTimeout(function() {
-                        //     tampil_stok();
-                        //     $('#simpan').show();
-                        //     $('#buat').hide();
-                        // }, 500)
+                        block();
+
+                        setTimeout(function() {
+                            $('#modal-sales').modal('hide');
+                            unblock();
+                            $('#modal-konfirm').modal('show');
+                        }, 1000)
                     }
                 }
             }
@@ -353,6 +346,11 @@
     });
 
     $('#simpan').on('click', function() {
+        $('#modal-simpan').modal('show');
+    });
+
+    $('#save').on('click', function() {
+
         const nomor = $('#nomor').val();
         const tanggal = $('#tanggal').val();
         const subttl = $('input[name="subttl"]').val();
@@ -367,11 +365,10 @@
                 id_user: id_user
             },
             success: function() {
+                $('#modal-simpan').modal('hide');
                 hapus_session_sales();
                 update_detil();
-                // $('#modal-loading').modal('show');
                 setTimeout(function() {
-                    // $('#modal-loading').modal('hide');
                     window.location.href = base_url + 'stok/penjualan/' + nomor;
                 }, 300);
             }
@@ -402,6 +399,33 @@
 
             }
         });
+    }
+
+
+
+
+    // Loader
+    function block() {
+        var body = $('#panel-item');
+        var w = body.css("width");
+        var h = body.css("height");
+        var trb = $('#throbber');
+        var position = body.offset(); // top and left coord, related to document
+
+        trb.css({
+            width: w,
+            height: h,
+            opacity: 0.7,
+            position: 'absolute',
+            top: position.top,
+            left: position.left
+        });
+        trb.show();
+    }
+
+    function unblock() {
+        var trb = $('#throbber');
+        trb.hide();
     }
 </script>
 <?php $this->load->view('template/foothtml'); ?>

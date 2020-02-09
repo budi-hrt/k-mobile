@@ -40,7 +40,7 @@
 
 <body>
     <?php
-    date_default_timezone_set('Asia/Jakarta');; ?>
+    date_default_timezone_set('Asia/Makassar');; ?>
     <div style="margin-left: 100px;margin-top:30px;">
         <h3>Laporan Penjualan Kanvas</h3>
     </div>
@@ -84,7 +84,7 @@
         </tbody>
     </table>
 
-    Admin Stok : <?= $nomor['nama_user']; ?>, <?= date('d F Y H:i:s', $nomor['date_update']); ?> , Status : <?= $nomor['status_penjualan']; ?> <br>
+    Admin <?= $nomor['status_penjualan']; ?> : <?= $nomor['nama_user']; ?>, <?= date('d F Y H:i:s', $nomor['date_update']); ?> , Status : <?= $nomor['status_penjualan']; ?> <br>
     <small style="margin-left: 10px;">- App by Budi Harto -</small>
 
 

@@ -10,6 +10,8 @@
     <meta name="author" content="">
 
     <title>Sales - Dashboard</title>
+    <link rel="icon" type="image/png" href="<?= base_url('assets/ico/'); ?>favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="<?= base_url('assets/ico/'); ?>favicon-16x16.png" sizes="16x16" />
 
     <!-- Custom fonts for this template-->
     <link href="<?= base_url('assets/'); ?>vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
