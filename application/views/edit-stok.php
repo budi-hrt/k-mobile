@@ -1,5 +1,5 @@
 <!-- Begin Page Content -->
-<div class="container-fluid p-1" id="panel-item">
+<div class="container-fluid p-1 mt-n3" id="panel-item">
 
     <!-- Page Heading -->
 
@@ -10,7 +10,12 @@
     <input type="hidden" name="id_pj" id="id_pj" value="<?= $nomor['id_pj']; ?>">
     <input type="hidden" name="nama_sales" id="nama_sales" value="<?= $nomor['nama_sales']; ?>">
     <input type="text" class="form-control form-control-sm my-2 datepicker" name="tanggal" id="tanggal" value="<?= date('d-m-Y', strtotime($nomor['tanggal'])); ?>">
-
+    <select name="area" id="area" class="form-control form-control-sm mb-1">
+        <option value="<?= $nomor['area']; ?>"><?= $nomor['nama_area']; ?></option>
+        <?php foreach ($area as $ar) : ?>
+            <option value="<?= $ar['kode_area']; ?>"><?= $ar['nama_area']; ?></option>
+        <?php endforeach; ?>
+    </select>
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <p class="m-0 font-weight-bold text-primary nama_sales">Nama : <?= $nomor['nama_sales']; ?></p>
@@ -143,7 +148,7 @@
         const sts = $('#sts').val();
         const nomor = $('#nomor').val();
         if (sts == '') {
-            window.location.href = base_url + 'stok/list';
+            window.location.href = base_url + 'stok/list_stk';
         } else {
 
             $.ajax({
@@ -201,11 +206,17 @@
 
 
     $('#simpan').on('click', function() {
-        $('#modal-simpan').modal('show');
+        const area = $('#area option:selected').attr('value');
+        if (area == '') {
+            alert('area belum dipilih');
+        } else {
+
+            $('#modal-simpan').modal('show');
+        }
     });
 
     $('#save').on('click', function() {
-
+        const area = $('#area option:selected').attr('value');
         const nomor = $('#nomor').val();
         const id = $('#id_pj').val();
         const subttl = $('input[name="subttl"]').val();
@@ -216,6 +227,7 @@
             data: {
                 nomor: nomor,
                 id: id,
+                area: area,
                 subttl: subttl,
                 id_user: id_user
             },
@@ -238,6 +250,7 @@
 
 
     function update_detil() {
+        const area = $('#area option:selected').attr('value');
         const id_trs = [];
         $('.id_trs').each(function() {
             id_trs.push($(this).val());
@@ -247,7 +260,8 @@
             type: 'post',
             url: base_url + 'stok/ubah_detil',
             data: {
-                id_trs: id_trs
+                id_trs: id_trs,
+                area: area
 
             }
         });

@@ -15,6 +15,7 @@ class Stok extends CI_Controller
         $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
         $data['produk'] = $this->stok->get_all()->result_array();
         $data['sales'] = $this->stok->get_sales()->result_array();
+        $data['area'] = $this->stok->get_area()->result_array();
         $this->load->view('template/header', $data);
         $this->load->view('template/sidebar');
         $this->load->view('template/topbar', $data);
@@ -163,13 +164,16 @@ class Stok extends CI_Controller
     public function update_detil()
     {
         $id = $_POST['id_trs'];
-
+        $tanggal = date('Y-m-d', strtotime($_POST['tanggal']));
+        $area = $_POST['area'];
         $status = 'Stok';
         $data = array();
         $index = 0; // Set index array awal dengan 0
         foreach ($id as $k) { // Kita buat perulangan berdasarkan nis sampai data terakhir
             array_push($data, array(
                 'id' => $k,
+                'tanggal_stok' => $tanggal,
+                'kode_area' => $area,
                 'status' => $status  // Ambil dan set data telepon sesuai index array dari $index
             ));
 
@@ -250,6 +254,7 @@ class Stok extends CI_Controller
     {
         $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
         $data['nomor'] = $this->stok->get_penjualan($nomor)->row_array();
+        $data['area'] = $this->stok->get_area()->result_array();
         $this->load->view('template/header', $data);
         $this->load->view('template/sidebar');
         $this->load->view('template/topbar', $data);
@@ -265,13 +270,14 @@ class Stok extends CI_Controller
     public function ubah_detil()
     {
         $id = $_POST['id_trs'];
-
+        $area = $_POST['area'];
         $status = 'Koreksi';
         $data = array();
         $index = 0; // Set index array awal dengan 0
         foreach ($id as $k) { // Kita buat perulangan berdasarkan nis sampai data terakhir
             array_push($data, array(
                 'id' => $k,
+                'kode_area' => $area,
                 'status' => $status  // Ambil dan set data telepon sesuai index array dari $index
             ));
 

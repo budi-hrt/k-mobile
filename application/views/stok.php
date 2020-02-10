@@ -1,5 +1,5 @@
 <!-- Begin Page Content -->
-<div class="container-fluid p-1">
+<div class="container-fluid p-1 mt-n3">
 
     <!-- Page Heading -->
 
@@ -9,6 +9,12 @@
     <input type="hidden" name="id_sales" id="id_sales" value="<?= $this->session->userdata('id_sls'); ?>">
     <input type="hidden" name="nama_sales" id="nama_sales" value="<?= $this->session->userdata('nm_sales'); ?>">
     <input type="text" class="form-control form-control-sm my-2 datepicker" name="tanggal" id="tanggal" value="<?= date('d-m-Y'); ?>">
+    <select name="area" id="area" class="form-control form-control-sm mb-1">
+        <option value="">Pilih Daerah...</option>
+        <?php foreach ($area as $ar) : ?>
+            <option value="<?= $ar['kode_area']; ?>"><?= $ar['nama_area']; ?></option>
+        <?php endforeach; ?>
+    </select>
 
     <div class="card shadow mb-4">
         <div class="card-header py-3">
@@ -346,13 +352,19 @@
     });
 
     $('#simpan').on('click', function() {
-        $('#modal-simpan').modal('show');
+        const area = $('#area option:selected').attr('value');
+        if (area == '') {
+            alert('area belum dipilih');
+        } else {
+
+            $('#modal-simpan').modal('show');
+        }
     });
 
     $('#save').on('click', function() {
-
         const nomor = $('#nomor').val();
         const tanggal = $('#tanggal').val();
+        const area = $('#area option:selected').attr('value');
         const subttl = $('input[name="subttl"]').val();
         const id_user = '<?= $user['id_user']; ?>';
         $.ajax({
@@ -361,6 +373,7 @@
             data: {
                 nomor: nomor,
                 tanggal: tanggal,
+                area: area,
                 subttl: subttl,
                 id_user: id_user
             },
@@ -386,6 +399,8 @@
     }
 
     function update_detil() {
+        const tanggal = $('#tanggal').val();
+        const area = $('#area option:selected').attr('value');
         const id_trs = [];
         $('.id_trs').each(function() {
             id_trs.push($(this).val());
@@ -395,7 +410,9 @@
             type: 'post',
             url: base_url + 'stok/update_detil',
             data: {
-                id_trs: id_trs
+                id_trs: id_trs,
+                tanggal: tanggal,
+                area: area
 
             }
         });

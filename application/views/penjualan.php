@@ -46,20 +46,26 @@
     </div>
     <table>
         <tr>
-            <td>Nomor</td>
-            <td>:</td>
+            <td style="padding:0px;">Nomor</td>
+            <td style="padding:0px;">:</td>
             <input type="hidden" name="nomor" id="nomor" value="<?= $nomor['nomor_transaksi']; ?>">
-            <td><?= $nomor['nomor_transaksi']; ?></td>
+            <td style="padding:0px;"><?= $nomor['nomor_transaksi']; ?></td>
         </tr>
         <tr>
-            <td>Tanggal</td>
-            <td>:</td>
-            <td><?= date('d F Y H:i:s', $nomor['date_created']); ?></td>
+            <td style="padding:0px;">Tanggal</td>
+            <td style="padding:0px;">:</td>
+            <td style="padding:0px;"><?= date('d F Y H:i:s', $nomor['date_created']); ?></td>
         </tr>
         <tr>
-            <td>Nama</td>
-            <td>:</td>
-            <td><?= $nomor['nama_sales']; ?></td>
+            <td style="padding:0px;">Nama</td>
+            <td style="padding:0px;">:</td>
+            <td style="padding:0px;"><?= $nomor['nama_sales']; ?></td>
+
+        </tr>
+        <tr>
+            <td style="padding:0px;">Area</td>
+            <td style="padding:0px;">:</td>
+            <td style="padding:0px;"><?= $nomor['nama_area']; ?></td>
         </tr>
     </table>
 
