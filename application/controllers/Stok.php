@@ -43,7 +43,11 @@ class Stok extends CI_Controller
         }
     }
 
-
+    public function get_area()
+    {
+        $data = $this->stok->get_pstarea();
+        echo json_encode($data);
+    }
 
     public function simpan_session_sales()
     {
@@ -166,6 +170,7 @@ class Stok extends CI_Controller
         $id = $_POST['id_trs'];
         $tanggal = date('Y-m-d', strtotime($_POST['tanggal']));
         $area = $_POST['area'];
+        $pstarea = $_POST['pstar'];
         $status = 'Stok';
         $data = array();
         $index = 0; // Set index array awal dengan 0
@@ -174,6 +179,7 @@ class Stok extends CI_Controller
                 'id' => $k,
                 'tanggal_stok' => $tanggal,
                 'kode_area' => $area,
+                'kode_pstarea' => $pstarea,
                 'status' => $status  // Ambil dan set data telepon sesuai index array dari $index
             ));
 
@@ -271,6 +277,7 @@ class Stok extends CI_Controller
     {
         $id = $_POST['id_trs'];
         $area = $_POST['area'];
+        $pstarea = $_POST['pstar'];
         $status = 'Koreksi';
         $data = array();
         $index = 0; // Set index array awal dengan 0
@@ -278,6 +285,7 @@ class Stok extends CI_Controller
             array_push($data, array(
                 'id' => $k,
                 'kode_area' => $area,
+                'kode_pstarea' => $pstarea,
                 'status' => $status  // Ambil dan set data telepon sesuai index array dari $index
             ));
 

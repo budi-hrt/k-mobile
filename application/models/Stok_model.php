@@ -22,6 +22,13 @@ class Stok_model extends CI_model
         $query =  $this->db->get('area');
         return $query;
     }
+    public function get_pstarea()
+    {
+        $kode = $this->input->get('pstArea');
+        $this->db->where('kode_area', $kode);
+        $query =  $this->db->get('area');
+        return $query->row_array();
+    }
 
 
     public function update_akhir()
@@ -47,10 +54,12 @@ class Stok_model extends CI_model
         $tanggal = date('Y-m-d', strtotime($this->input->post('tanggal')));
         $nomor = $this->input->post('nomor');
         $area = $this->input->post('area');
+        $pstarea = $this->input->post('pstar');
         $id_user = $this->input->post('id_user');
         $data = array(
             'tanggal' => $tanggal,
             'kode_area' => $area,
+            'kode_pstarea' => $pstarea,
             'jumlah' => $jumlah,
             'date_created' => time(),
             'date_update' => time(),
@@ -64,7 +73,7 @@ class Stok_model extends CI_model
 
     public function get_penjualan($nomor)
     {
-        $this->db->select('p.id as id_pj,p.tanggal,p.nomor_transaksi,s.nama_sales,u.nama_user,p.date_update,p.date_created,p.status_penjualan,a.nama_area,p.kode_area as area');
+        $this->db->select('p.id as id_pj,p.tanggal,p.nomor_transaksi,s.nama_sales,u.nama_user,p.date_update,p.date_created,p.status_penjualan,a.nama_area,p.kode_area as area,p.kode_pstarea as pst');
         $this->db->from('penjualan p');
         $this->db->join('sales s', 's.id=p.id_sales', 'left');
         $this->db->join('user u', 'u.id_user=p.id_user', 'left');
@@ -93,9 +102,11 @@ class Stok_model extends CI_model
         $jumlah = $this->input->post('subttl');
         $id = $this->input->post('id');
         $area = $this->input->post('area');
+        $pstarea = $this->input->post('pstar');
         $id_user = $this->input->post('id_user');
         $data = array(
             'kode_area' => $area,
+            'kode_pstarea' => $pstarea,
             'jumlah' => $jumlah,
             'date_update' => time(),
             'id_user' => $id_user,

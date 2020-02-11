@@ -9,6 +9,7 @@
     <input type="hidden" name="id_sales" id="id_sales" value="<?= $this->session->userdata('id_sls'); ?>">
     <input type="hidden" name="nama_sales" id="nama_sales" value="<?= $this->session->userdata('nm_sales'); ?>">
     <input type="text" class="form-control form-control-sm my-2 datepicker" name="tanggal" id="tanggal" value="<?= date('d-m-Y'); ?>">
+    <input type="hidden" name="pst_area" id="pst_area">
     <select name="area" id="area" class="form-control form-control-sm mb-1">
         <option value="">Pilih Daerah...</option>
         <?php foreach ($area as $ar) : ?>
@@ -176,6 +177,24 @@
         });
 
         tampil_stok();
+    });
+
+    $('#area').on('change', function() {
+
+        const pstArea = this.value;
+
+        $.ajax({
+            type: 'get',
+            url: base_url + 'stok/get_area',
+            data: {
+                pstArea: pstArea
+            },
+            dataType: 'json',
+            success: function(data) {
+                $('input[name="pst_area"]').val(data.kode_pstarea);
+                console.log(data);
+            }
+        })
     });
 
 
@@ -362,6 +381,7 @@
     });
 
     $('#save').on('click', function() {
+        const pstar = $('input[name="pst_area"]').val();
         const nomor = $('#nomor').val();
         const tanggal = $('#tanggal').val();
         const area = $('#area option:selected').attr('value');
@@ -374,6 +394,7 @@
                 nomor: nomor,
                 tanggal: tanggal,
                 area: area,
+                pstar: pstar,
                 subttl: subttl,
                 id_user: id_user
             },
@@ -401,6 +422,7 @@
     function update_detil() {
         const tanggal = $('#tanggal').val();
         const area = $('#area option:selected').attr('value');
+        const pstar = $('input[name="pst_area"]').val();
         const id_trs = [];
         $('.id_trs').each(function() {
             id_trs.push($(this).val());
@@ -412,7 +434,8 @@
             data: {
                 id_trs: id_trs,
                 tanggal: tanggal,
-                area: area
+                area: area,
+                pstar: pstar
 
             }
         });

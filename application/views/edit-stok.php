@@ -9,6 +9,7 @@
     <input type="hidden" name="nomor" id="nomor" value="<?= $nomor['nomor_transaksi']; ?>">
     <input type="hidden" name="id_pj" id="id_pj" value="<?= $nomor['id_pj']; ?>">
     <input type="hidden" name="nama_sales" id="nama_sales" value="<?= $nomor['nama_sales']; ?>">
+    <input type="hidden" name="pst_area" id="pst_area" value="<?= $nomor['pst']; ?>">
     <input type="text" class="form-control form-control-sm my-2 datepicker" name="tanggal" id="tanggal" value="<?= date('d-m-Y', strtotime($nomor['tanggal'])); ?>">
     <select name="area" id="area" class="form-control form-control-sm mb-1">
         <option value="<?= $nomor['area']; ?>"><?= $nomor['nama_area']; ?></option>
@@ -140,6 +141,23 @@
     });
 
 
+    $('#area').on('change', function() {
+
+        const pstArea = this.value;
+
+        $.ajax({
+            type: 'get',
+            url: base_url + 'stok/get_area',
+            data: {
+                pstArea: pstArea
+            },
+            dataType: 'json',
+            success: function(data) {
+                $('input[name="pst_area"]').val(data.kode_pstarea);
+                console.log(data);
+            }
+        })
+    });
 
 
 
@@ -216,6 +234,7 @@
     });
 
     $('#save').on('click', function() {
+        const pstar = $('input[name="pst_area"]').val();
         const area = $('#area option:selected').attr('value');
         const nomor = $('#nomor').val();
         const id = $('#id_pj').val();
@@ -228,6 +247,7 @@
                 nomor: nomor,
                 id: id,
                 area: area,
+                pstar: pstar,
                 subttl: subttl,
                 id_user: id_user
             },
@@ -251,6 +271,7 @@
 
     function update_detil() {
         const area = $('#area option:selected').attr('value');
+        const pstar = $('input[name="pst_area"]').val();
         const id_trs = [];
         $('.id_trs').each(function() {
             id_trs.push($(this).val());
@@ -261,7 +282,8 @@
             url: base_url + 'stok/ubah_detil',
             data: {
                 id_trs: id_trs,
-                area: area
+                area: area,
+                pstar: pstar
 
             }
         });
