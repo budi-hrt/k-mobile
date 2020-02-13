@@ -21,7 +21,7 @@ foreach ($data as $r) : ?>
 
     $terjual = $r['awal'] - $r['akhir'];
 
-    $total = $terjual * $r['harga'];
+    $total = $terjual * $r['harga_produk'];
     $banding = $r['banding'];
     if ($r['awal'] >= $banding) {
         $dos = floor($r['awal'] / $banding);
@@ -67,11 +67,7 @@ foreach ($data as $r) : ?>
             <td align="right">' . number_format($total, 0, ',', '.') . '</td>
             ';
         }; ?>
-        <!-- <td><?= $r['alias']; ?></td>
-        <td align="center"><?= $dos; ?> /<?= $bks; ?></td>
-        <td align="center"><?= $ados; ?> /<?= $abks; ?></td>
-        <td align="center"><?= $tdos; ?> /<?= $tbks; ?></td>
-        <td align="right"><?= number_format($total, 0, ',', '.'); ?></td> -->
+
     </tr>
 
     <?php

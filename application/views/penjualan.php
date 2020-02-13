@@ -79,12 +79,7 @@
         </thead>
 
         <tbody id="tampil">
-            <!-- <tr>
-                <td>Potenza Filter 12</td>
-                <td align="center">0 / 2</td>
-                <td align="center">0 / 200</td>
-                <td align="center">56.000</td>
-            </tr> -->
+
 
 
         </tbody>
