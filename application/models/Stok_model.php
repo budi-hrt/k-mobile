@@ -73,7 +73,7 @@ class Stok_model extends CI_model
 
     public function get_penjualan($nomor)
     {
-        $this->db->select('p.id as id_pj,p.tanggal,p.nomor_transaksi,s.nama_sales,u.nama_user,p.date_update,p.date_created,p.status_penjualan,a.nama_area,p.kode_area as area,p.kode_pstarea as pst');
+        $this->db->select('p.id as id_pj,p.tanggal,p.nomor_transaksi,s.nama_sales,u.nama_user,p.date_update,p.date_created,p.status_penjualan,a.nama_area,p.kode_area as area,p.kode_pstarea as pst,p.catatan');
         $this->db->from('penjualan p');
         $this->db->join('sales s', 's.id=p.id_sales', 'left');
         $this->db->join('user u', 'u.id_user=p.id_user', 'left');
@@ -113,6 +113,18 @@ class Stok_model extends CI_model
             'status_penjualan' => 'Koreksi'
         );
         $this->db->where('id', $id);
+        $this->db->update('penjualan', $data);
+    }
+
+
+    public function simpan_catatan()
+    {
+        $nmrstok = $this->input->post('nmrstk');
+        $catatan = $this->input->post('catatan');
+        $data = array(
+            'catatan' => $catatan
+        );
+        $this->db->where('nomor_transaksi', $nmrstok);
         $this->db->update('penjualan', $data);
     }
 }

@@ -84,6 +84,18 @@
 
         </tbody>
     </table>
+    <table style="margin-top: -9px;">
+        <tr>
+            <td>Catatan :</td>
+        </tr>
+        <tr>
+            <td>
+                <?= $nomor['catatan']; ?>
+        </tr>
+
+        </td>
+    </table></br>
+
 
     Admin <?= $nomor['status_penjualan']; ?> : <?= $nomor['nama_user']; ?>, <?= date('d F Y H:i:s', $nomor['date_update']); ?> , Status : <?= $nomor['status_penjualan']; ?> <br>
     <small style="margin-left: 10px;">- App by Budi Harto -</small>

@@ -43,6 +43,8 @@
                     </tbody>
                 </table>
             </div>
+
+            <a href="javascript:;" class="btn btn-sm btn-info catatan"> Catatan</a>
         </div>
     </div>
 
@@ -125,6 +127,38 @@
     </div>
 </div>
 
+
+
+
+
+<div class="modal fade" id="modal-catatan" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content ">
+            <div class="modal-header">
+                <h5 class="modal-title ml-5">Catatan</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body pl-5 pr-5 pb-5 pt-2">
+                <div class="row justify-content-center">
+                    <div class="col-md-8 ">
+                        <form id="form-catatan" action="">
+                            <input type="hidden" name="nmrstk" id="nmrstk">
+                            <div class="form-group">
+                                <label for="catatan">Masukan Catatan</label>
+                                <textarea class="form-control" id="catatan" name="catatan" rows="5"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <button class="btn  btn-primary btn-block" id="btn_catatan">Simpan</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="modal-konfirm" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content ">
@@ -138,6 +172,22 @@
                 <h5>Belum Ada Stok Awal !</h5>
             </div>
 
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-konfirm2" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content ">
+            <div class="modal-header">
+                <h5 class="modal-title ml-5">Konfirmasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body pl-3 pr-2 pb-5 pt-2">
+                <h5>Belum Ada Transaksi !</h5>
+            </div>
         </div>
     </div>
 </div>
@@ -337,6 +387,33 @@
         $('#modal-stok').find('.modal-title').text(alias);
         $('#modal-stok').modal('show');
     });
+
+    $('.catatan').on('click', function() {
+        const nomor = $('#nomor').val();
+        if (nomor == "") {
+            $('#modal-konfirm2').modal('show');
+        } else {
+            $('input[name="nmrstk"]').val(nomor);
+            $('#form-catatan').attr('action', base_url + 'stok/simpancatatan');
+            $('#modal-catatan').modal('show');
+        }
+
+    });
+
+    $('#btn_catatan').on('click', function() {
+        const url = $('#form-catatan').attr('action');
+        const data = $('#form-catatan').serialize();
+        $.ajax({
+            type: 'post',
+            url: url,
+            data: data,
+            success: function() {
+                $('#modal-catatan').modal('hide');
+            }
+        });
+
+    });
+
 
 
     $('#update').on('click', function() {

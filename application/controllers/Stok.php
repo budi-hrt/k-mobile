@@ -313,4 +313,10 @@ class Stok extends CI_Controller
         $array = 'sts';
         $this->session->unset_userdata($array);
     }
+
+
+    public function simpanCatatan()
+    {
+        $this->stok->simpan_catatan();
+    }
 }

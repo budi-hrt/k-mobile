@@ -42,6 +42,8 @@
                     </tbody>
                 </table>
             </div>
+
+            <a href="javascript:;" class="btn btn-sm btn-info catatan"> Catatan</a>
         </div>
     </div>
 
@@ -91,7 +93,34 @@
 </div>
 
 
+<!-- Modal Catatan -->
+<div class="modal fade" id="modal-catatan" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content ">
+            <div class="modal-header">
+                <h5 class="modal-title ml-5">Catatan</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body pl-5 pr-5 pb-5 pt-2">
+                <div class="row justify-content-center">
+                    <div class="col-md-8 ">
+                        <form id="form-catatan" action="">
+                            <input type="hidden" name="nmrstk" id="nmrstk" value="<?= $nomor['nomor_transaksi']; ?>">
+                            <div class="form-group">
+                                <label for="catatan">Masukan Catatan</label>
+                                <textarea class="form-control" id="catatan" name="catatan" rows="5"><?= $nomor['catatan']; ?></textarea>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <button class="btn  btn-primary btn-block" id="btn_catatan">Simpan</button>
+            </div>
 
+        </div>
+    </div>
+</div>
 
 
 
@@ -182,6 +211,33 @@
             });
         }
     }
+
+
+    // Catatan
+    $('.catatan').on('click', function() {
+        // $('input[name="nmrstk"]').val(nomor);
+        $('#form-catatan').attr('action', base_url + 'stok/simpancatatan');
+        $('#modal-catatan').modal('show');
+
+    });
+
+    $('#btn_catatan').on('click', function() {
+        const url = $('#form-catatan').attr('action');
+        const data = $('#form-catatan').serialize();
+        $.ajax({
+            type: 'post',
+            url: url,
+            data: data,
+            success: function() {
+                $('#modal-catatan').modal('hide');
+            }
+        });
+
+    });
+    // Akhir catatan
+
+
+
 
 
     $('#detil').on('click', '.item-edit', function() {
