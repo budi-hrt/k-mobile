@@ -25,6 +25,7 @@
                     </thead>
                     <tbody>
                         <?php
+                        $tanggalSekarang = date('Y-m-d');
                         $no = 1;
                         foreach ($stok as $s) : ?>
                             <tr>
@@ -33,7 +34,11 @@
                                 <td class="text-right">
                                     <a href="javascript:;" class="mr-3 item-detil" data-id="<?= $s['id_pj']; ?>" data-nmr="<?= $s['nomor_transaksi']; ?>"><i class="fas fa-eye"></i></a>
                                     <a href="javascript:;" class="mr-3 item-print" data-nmr="<?= $s['nomor_transaksi']; ?>"><i class="fas text-info fa-print"></i></a>
-                                    <a href="javascript:;" class="mr-2 item-edit" data-id="<?= $s['id_pj']; ?>" data-nmr="<?= $s['nomor_transaksi']; ?>" data-tgl="<?= $s['tanggal']; ?>"><i class="fas fa-pencil-alt text-success"></i></a>
+                                    <?php if ($s['tanggal'] == $tanggalSekarang) : ?>
+                                        <a href="javascript:;" class="mr-2 item-edit" data-id="<?= $s['id_pj']; ?>" data-nmr="<?= $s['nomor_transaksi']; ?>" data-tgl="<?= $s['tanggal']; ?>"><i class="fas fa-pencil-alt text-success"></i></a>
+                                    <?php else : ?>
+                                        <a href="#" class="mr-2"><i class="fas fa-pencil-alt text-secondary"></i></a>
+                                    <?php endif; ?>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

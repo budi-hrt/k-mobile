@@ -70,7 +70,7 @@ class Stok extends CI_Controller
     public function tampil_stok()
     {
         $nomor = $this->input->get('nomor');
-        $this->db->select('t.id as id_detil,t.awal,t.akhir,t.kode_produk,p.nama_produk,p.banding,t.harga_produk,p.alias');
+        $this->db->select('t.id as id_detil,t.awal,t.akhir,t.kode_produk,p.nama_produk,p.banding,t.harga_produk,p.alias,t.retur');
         $this->db->from('transaksi t');
         $this->db->join('produk p', 'p.kode=t.kode_produk', 'left');
         $this->db->where('t.nomor_stok', $nomor);
@@ -122,11 +122,21 @@ class Stok extends CI_Controller
                 }
                 echo '
                 <tr>
-                <input type="hidden" class="id_trs" value="' . $r['id_detil'] . '">
-                <td>' . $r['alias'] . '</td>
-                <td>' . $ados . '</td>
-                <td>' . $abks . '</td>
-                <td class="text-center"><a href="javascript:;" class="item-edit" data-id="' . $r['id_detil'] . '" data-banding="' . $r['banding'] . '"  data-dos="' . $ados . '" data-bks="' . $abks . '" data-nama="' . $r['alias'] . '"><i class="fas fa-pencil-alt text-success"></i></a></td>
+                <input type="hidden" class="id_trs" value="' . $r['id_detil'] . '">';
+
+                if ($r['retur'] == 'True') {
+
+                    echo '<td class="text-danger">' . $r['alias'] . '</td>
+                        <td class="text-danger">' . $ados . '</td>
+                         <td class="text-danger">' . $abks . '</td>';
+                } else {
+
+                    echo '<td>' . $r['alias'] . '</td>
+                            <td>' . $ados . '</td>
+                            <td>' . $abks . '</td>';
+                }
+
+                echo ' <td class="text-center"><a href="javascript:;" class="item-edit" data-id="' . $r['id_detil'] . '" data-banding="' . $r['banding'] . '"  data-dos="' . $ados . '" data-bks="' . $abks . '" data-nama="' . $r['alias'] . '"><i class="fas fa-pencil-alt text-success"></i></a></td>
                 <input type="hidden" class="total" value="' . $total . '">
                 </tr>
                 ';
@@ -153,6 +163,30 @@ class Stok extends CI_Controller
     {
         $this->stok->update_akhir();
     }
+
+    public function cekProdukRetur()
+    {
+        $msg['success'] = false;
+        $nomorStok = $this->input->get('nomor');
+        $kodeProduk = $this->input->get('kodeProduk');
+        $cek = $this->db->get_where('transaksi', ['nomor_stok' => $nomorStok, 'kode_produk' => $kodeProduk]);
+        if ($cek->num_rows() > 0) {
+
+            echo json_encode($msg);
+        } else {
+            $msg['success'] = true;
+            echo json_encode($msg);
+        }
+    }
+    public function simpanRetur()
+    {
+        $this->stok->simpanRetur();
+    }
+
+
+
+
+
 
     public function hapus_session_sales()
     {
@@ -265,6 +299,7 @@ class Stok extends CI_Controller
         $this->m_security->getsecurity();
         $data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
         $data['nomor'] = $this->stok->get_penjualan($nomor)->row_array();
+        $data['produk'] = $this->stok->get_all()->result_array();
         $data['area'] = $this->stok->get_area()->result_array();
         $this->load->view('template/header', $data);
         $this->load->view('template/sidebar');

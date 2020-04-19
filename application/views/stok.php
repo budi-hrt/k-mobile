@@ -43,8 +43,11 @@
                     </tbody>
                 </table>
             </div>
-
-            <a href="javascript:;" class="btn btn-sm btn-info catatan"> Catatan</a>
+            <hr>
+            <div class="tool-tambahan" style="display:none;">
+                <a href="javascript:;" class="btn btn-sm btn-secondary retur"> Retur</a>
+                <a href="javascript:;" class="btn btn-sm btn-info catatan"> Catatan</a>
+            </div>
         </div>
     </div>
 
@@ -92,6 +95,42 @@
     </div>
 </div>
 
+
+<div class="modal fade" id="modal-produk" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <p class="modal-title" id="exampleModalLabel">Pilih Produk</p>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-1" id="panel-item">
+                <div class="table-responsive">
+                    <table class="table table-sm  table-app" width="100%" cellspacing="0" id="table-produk">
+
+                        <tbody>
+                            <?php
+                            $no = 1;
+                            foreach ($produk as $p) : ?>
+                                <tr>
+                                    <td width="50px"><img src="<?= base_url('assets/img/icon/box.png'); ?>" alt=""></td>
+                                    <td> <a href="javascript:;" class="mr-2 item-nama" data-kode="<?= $p['kode']; ?>" data-banding="<?= $p['banding']; ?>" data-harga="<?= $p['harga']; ?>"><?= $p['alias']; ?></a></td>
+                                    <td class="text-right">
+                                        <a href="javascript:;" class="mr-2 item-pilih" data-kode="<?= $p['kode']; ?>" data-banding="<?= $p['banding']; ?>" data-harga="<?= $p['harga']; ?>"><i class="fas fa-check mr-3"></i></a>
+
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="modal-stok" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content ">
@@ -121,6 +160,44 @@
                     </div>
                 </div>
                 <button class="btn  btn-primary btn-block" id="update">Simpan</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="modal-retur" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content ">
+            <div class="modal-header">
+                <h5 class="modal-title ml-5">Masukan Retur</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body pl-5 pr-5 pb-5 pt-2">
+                <div class="row justify-content-center">
+                    <div class="col-md-8 ">
+                        <input type="hidden" name="kodeRetur">
+                        <input type="hidden" name="hargaRetur">
+                        <input type="hidden" name="bandingRetur">
+                        <div class="form-group row my-1">
+                            <label for="dos" class="col-sm-3 col-form-label">Dos</label>
+                            <div class="col-sm-9">
+                                <input type="number" class="form-control " id="dosRetur" name="dosRetur">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="bks" class="col-sm-3 col-form-label">Bks</label>
+                            <div class="col-sm-9">
+                                <input type="number" class="form-control " id="bksRetur" name="bksRetur">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn  btn-success btn-block" onclick="simpanRetur()">Simpan</button>
             </div>
 
         </div>
@@ -287,6 +364,7 @@
             }
         });
     });
+
     $('#table-sales').on('click', '.item-pilih', function() {
         const id_sls = $(this).attr('data-id');
         const nm_sales = $(this).attr('data-nama');
@@ -333,11 +411,13 @@
             $('#simpan').hide();
             $('#baru').show();
             $('#table-stok').hide();
+            $('.tool-tambahan').hide();
 
         } else {
             $('#simpan').show();
             $('#baru').hide();
             $('#table-stok').show();
+            $('.tool-tambahan').show();
         }
 
     }
@@ -400,6 +480,8 @@
 
     });
 
+
+
     $('#btn_catatan').on('click', function() {
         const url = $('#form-catatan').attr('action');
         const data = $('#form-catatan').serialize();
@@ -415,6 +497,72 @@
     });
 
 
+    // Retur
+    $('.retur').on('click', function() {
+        $('#modal-produk').modal('show');
+    })
+
+
+    $('#table-produk').on('click', '.item-pilih', function() {
+        const nomor = $('#nomor').val();
+        const kodeProduk = $(this).attr('data-kode');
+        const bandingProduk = $(this).attr('data-banding');
+        const hargaProduk = $(this).attr('data-harga');
+        $.ajax({
+            type: 'get',
+            url: base_url + 'stok/cekProdukRetur',
+            data: {
+                nomor: nomor,
+                kodeProduk: kodeProduk
+            },
+            dataType: 'json',
+            success: function(response) {
+                if (response.success === false) {
+                    alert('Produk sudah ada di table stok!');
+                    return false;
+                } else {
+                    $('[name="kodeRetur"]').val(kodeProduk);
+                    $('[name="bandingRetur"]').val(bandingProduk);
+                    $('[name="hargaRetur"]').val(hargaProduk);
+                    $('#modal-produk').modal('hide');
+                    $('#modal-retur').modal('show');
+                }
+            }
+        })
+
+    })
+
+
+    const simpanRetur = () => {
+        const nomor = $('#nomor').val();
+        const idSales = $('[name="id_sales"]').val();
+        const kodeProduk = $('[name="kodeRetur"]').val();
+        const bandingProduk = $('[name="bandingRetur"]').val();
+        const hargaProduk = $('[name="hargaRetur"]').val();
+        const dos = $('input[name="dosRetur"]').val();
+        const bks = $('input[name="bksRetur"]').val();
+        const idUser = '<?= $user['id_user']; ?>';
+        $.ajax({
+            type: 'post',
+            url: base_url + 'stok/simpanRetur',
+            data: {
+                nomor: nomor,
+                idSales: idSales,
+                kode: kodeProduk,
+                banding: bandingProduk,
+                harga: hargaProduk,
+                dos: dos,
+                bks: bks,
+                idUser: idUser
+            },
+            success: function() {
+                $('#modal-retur').modal('hide');
+                tampil_stok();
+            }
+        });
+    }
+
+    // akhir retur
 
     $('#update').on('click', function() {
         const id = $('input[name="id_detil"]').val();

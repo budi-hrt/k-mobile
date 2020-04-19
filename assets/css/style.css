@@ -51,3 +51,8 @@ table thead th {
 	margin: auto;
 	display: block;
 }
+
+.tool-tambahan{
+	display: flex;
+	justify-content: space-between;
+}

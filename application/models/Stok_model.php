@@ -47,6 +47,33 @@ class Stok_model extends CI_model
         $this->db->update('transaksi', $data);
     }
 
+
+    public function simpanRetur()
+    {
+        $nomor = $this->input->post('nomor');
+        $idSales = $this->input->post('idSales');
+        $kode = $this->input->post('kode');
+        $banding = $this->input->post('banding');
+        $harga = $this->input->post('harga');
+        $idUser = $this->input->post('idUser');
+        // $awal = $this->input->post('awal');
+        $dos = $this->input->post('dos');
+        $bks = $this->input->post('bks');
+        $stok = $dos * $banding;
+        $akhir = $stok + $bks;
+        $data = array(
+            'nomor_stok' => $nomor,
+            'id_sales' => $idSales,
+            'kode_produk' => $kode,
+            'harga_produk' => $harga,
+            'akhir' => $akhir,
+            'retur' => 'True',
+            'date_created' => time(),
+            'id_user' => $idUser
+        );
+        $this->db->insert('transaksi', $data);
+    }
+
     public function update_tb()
     {
 
@@ -73,7 +100,7 @@ class Stok_model extends CI_model
 
     public function get_penjualan($nomor)
     {
-        $this->db->select('p.id as id_pj,p.tanggal,p.nomor_transaksi,s.nama_sales,u.nama_user,p.date_update,p.date_created,p.status_penjualan,a.nama_area,p.kode_area as area,p.kode_pstarea as pst,p.catatan');
+        $this->db->select('p.id as id_pj,p.tanggal,p.nomor_transaksi,p.id_sales,s.nama_sales,u.nama_user,p.date_update,p.date_created,p.status_penjualan,a.nama_area,p.kode_area as area,p.kode_pstarea as pst,p.catatan');
         $this->db->from('penjualan p');
         $this->db->join('sales s', 's.id=p.id_sales', 'left');
         $this->db->join('user u', 'u.id_user=p.id_user', 'left');
