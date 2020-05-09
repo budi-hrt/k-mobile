@@ -242,7 +242,7 @@ class Stok extends CI_Controller
         $this->db->where('t.nomor_stok', $nomor);
         $data = $this->db->get();
 
-        if ($data->num_rows() > 1) {
+        if ($data->num_rows() > 0) {
             // foreach ($data->result_array() as $r) {
 
             // }
