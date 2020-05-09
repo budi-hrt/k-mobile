@@ -90,7 +90,7 @@ class Stok extends CI_Controller
         $tdos = 0;
         $tbks = 0;
         $tres = 0;
-        if ($data->num_rows() > 1) {
+        if ($data->num_rows() > 0) {
             foreach ($data->result_array() as $r) {
                 $terjual = $r['awal'] - $r['akhir'];
                 $total = $terjual * $r['harga_produk'];
